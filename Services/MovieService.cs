@@ -1,9 +1,12 @@
 
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Context;
 using Contracts;
 using Entites;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
@@ -16,29 +19,41 @@ namespace Services
             this._context = context;
         }
 
-        public Task<bool> AddMovie()
+        
+
+        public Task<bool> AddMovie(Movie movie)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteMovie(int id)
+        public async Task<bool> DeleteMovie(int id)
         {
-            throw new System.NotImplementedException();
+            var movie = await _context.Movies
+                .SingleOrDefaultAsync(m => m.Id == id);
+            try
+            {
+                _context.Remove(movie);
+                return true;
+            }
+            catch (System.Exception )
+            {
+                return false;
+            }
         }
 
-        public Task<Movie> GetMovieById(int id)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<Movie> GetMovieById(int id) =>
+            await _context.Movies
+                .SingleOrDefaultAsync(m => m.Id == id);
+        
 
-        public Task<IEnumerable<Movie>> GetMovies()
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<Movie>> GetMovies() =>
+            await _context.Movies.ToListAsync();
 
-        public Task<bool> UpdateMovie()
+        public async Task<bool> UpdateMovie(Movie movie) 
         {
-            throw new System.NotImplementedException();
+            var findMovie = await _context.Movies
+                .SingleOrDefaultAsync(m => m.Id == movie.Id);
         }
+            
     }
 }
