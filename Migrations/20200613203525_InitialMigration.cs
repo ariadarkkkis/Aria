@@ -9,6 +9,19 @@ namespace Aria.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -18,8 +31,7 @@ namespace Aria.Migrations
                     Imdb = table.Column<string>(nullable: true),
                     Year = table.Column<int>(nullable: false),
                     ReleaseDate = table.Column<DateTimeOffset>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,55 +39,45 @@ namespace Aria.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "MovieCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 255, nullable: false),
-                    MovieId = table.Column<int>(nullable: true)
+                    MovieId = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_MovieCategories", x => new { x.MovieId, x.CategoryId });
                     table.ForeignKey(
-                        name: "FK_Categories_Movies_MovieId",
+                        name: "FK_MovieCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MovieCategories_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_MovieId",
-                table: "Categories",
-                column: "MovieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Movies_CategoryId",
-                table: "Movies",
+                name: "IX_MovieCategories_CategoryId",
+                table: "MovieCategories",
                 column: "CategoryId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Movies_Categories_CategoryId",
-                table: "Movies",
-                column: "CategoryId",
-                principalTable: "Categories",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Categories_Movies_MovieId",
-                table: "Categories");
-
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "MovieCategories");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Movies");
         }
     }
 }

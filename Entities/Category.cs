@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Aria.Entities;
 
 namespace Entites
 {
@@ -6,6 +8,7 @@ namespace Entites
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual List<Movie> Movies { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<MovieCategory> MovieCategories { get; set; }
     }
 }

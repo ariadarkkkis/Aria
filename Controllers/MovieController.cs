@@ -33,10 +33,10 @@ namespace Controllers
             => Ok(await _service.Add(movie));
 
         // Update an entry
-        [HttpPut("Update/{id:int}")]
+        [HttpPut("Update")]
         [Produces(typeof(bool))]
-        public async Task<IActionResult> UpdateMovie([FromQuery]int id, [FromBody]Movie movie)
-            => Ok(await _service.Update(id, movie));
+        public async Task<IActionResult> UpdateMovie([FromBody]Movie movie)
+            => Ok(await _service.Update(movie));
 
         // Delete an entry
         [HttpDelete("Delete/{id:int}")]

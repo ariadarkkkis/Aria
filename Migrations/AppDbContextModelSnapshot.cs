@@ -17,23 +17,33 @@ namespace Aria.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Aria.Entities.MovieCategory", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("MovieCategories");
+                });
+
             modelBuilder.Entity("Entites.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
                         .HasMaxLength(255);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
 
                     b.ToTable("Categories");
                 });
@@ -44,18 +54,15 @@ namespace Aria.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Imdb")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset>("ReleaseDate")
@@ -66,23 +73,20 @@ namespace Aria.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("Entites.Category", b =>
+            modelBuilder.Entity("Aria.Entities.MovieCategory", b =>
                 {
-                    b.HasOne("Entites.Movie", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("MovieId");
-                });
-
-            modelBuilder.Entity("Entites.Movie", b =>
-                {
-                    b.HasOne("Entites.Category", null)
-                        .WithMany("Movies")
+                    b.HasOne("Entites.Category", "Category")
+                        .WithMany("MovieCategories")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entites.Movie", "Movie")
+                        .WithMany("MovieCategories")
+                        .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

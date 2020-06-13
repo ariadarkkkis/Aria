@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Aria.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entites
@@ -16,8 +17,6 @@ namespace Entites
         public int Year { get; set; }
         public DateTimeOffset ReleaseDate { get; set; }
         public string Description { get; set; }
-        public int CategoryId { get; set; }
-        [JsonIgnore]
-        public virtual List<Category> Categories { get; set; }
+        public virtual ICollection<MovieCategory> MovieCategories { get; set; }
     }
 }
