@@ -37,8 +37,8 @@ namespace Services
         // Delete
         public async Task<bool> Delete(int id)
         {
-            var movie = await _context.Movies
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var movie = await _context.Movies.FindAsync(id);
+            
             try
             {
                 _context.Remove(movie);
@@ -53,8 +53,7 @@ namespace Services
 
         // Get by ID
         public async Task<Movie> GetById(int id) =>
-            await _context.Movies
-                .SingleOrDefaultAsync(m => m.Id == id);
+            await _context.Movies.FindAsync(id);
         
         // Get All
         public async Task<IEnumerable<Movie>> GetAll() =>
@@ -63,8 +62,8 @@ namespace Services
         // Update
         public async Task<bool> Update(int id, Movie movie) 
         {
-            if (id != movie.Id)
-                return false;
+            // if (id != movie.Id)
+            //     return false;
 
             _context.Entry(movie).State = EntityState.Modified;
             try
@@ -78,8 +77,8 @@ namespace Services
                 {
                     return false;
                 }
+                return false;
             }
-            return false;
         }
             
     }

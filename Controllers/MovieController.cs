@@ -21,8 +21,8 @@ namespace Controllers
             => Ok(await _service.GetAll());
 
         // Get entry by ID
-        [HttpGet("Id")]
-        public async Task<IActionResult> GetMovieById([FromQuery]int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetMovieById(int id)
             => Ok(await _service.GetById(id));
 
         // Add
@@ -41,7 +41,7 @@ namespace Controllers
         // Delete an entry
         [HttpDelete("Delete/{id:int}")]
         [Produces(typeof(bool))]
-        public async Task<IActionResult> DeleteMovie([FromQuery]int id)
+        public async Task<IActionResult> DeleteMovie(int id)
             => Ok(await _service.Delete(id));
 
         

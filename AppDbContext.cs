@@ -43,25 +43,25 @@ namespace Context
 
     }
 
-    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
-    {
-        public AppDbContext CreateDbContext(string[] args)
-        {
-            var basePath = Directory.GetCurrentDirectory();
-            Console.WriteLine($"Using `{basePath}` as the BasePath");
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(basePath)
-                .AddJsonFile("appsettings.json")
-                .Build();
-            var builder = new DbContextOptionsBuilder<AppDbContext>();
-            builder.EnableSensitiveDataLogging();
-            var connectionString = configuration.GetConnectionString("Default");
-            builder.UseMySql(connectionString, mysqlOptions =>
-            {
-                mysqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend);
-                mysqlOptions.ServerVersion(new Version(10, 3, 12), ServerType.MariaDb);
-            });
-            return new AppDbContext(builder.Options);
-        }
-    }
+    // public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    // {
+    //     public AppDbContext CreateDbContext(string[] args)
+    //     {
+    //         var basePath = Directory.GetCurrentDirectory();
+    //         Console.WriteLine($"Using `{basePath}` as the BasePath");
+    //         var configuration = new ConfigurationBuilder()
+    //             .SetBasePath(basePath)
+    //             .AddJsonFile("appsettings.json")
+    //             .Build();
+    //         var builder = new DbContextOptionsBuilder<AppDbContext>();
+    //         builder.EnableSensitiveDataLogging();
+    //         var connectionString = configuration.GetConnectionString("Default");
+    //         builder.UseMySql(connectionString, mysqlOptions =>
+    //         {
+    //             mysqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend);
+    //             mysqlOptions.ServerVersion(new Version(10, 3, 12), ServerType.MariaDb);
+    //         });
+    //         return new AppDbContext(builder.Options);
+    //     }
+    // }
 }

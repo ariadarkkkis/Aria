@@ -2,15 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Context;
+using Contracts;
+using Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Services;
 
 namespace Aria
 {
@@ -26,6 +31,11 @@ namespace Aria
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>
+                (o => o.UseMySql(@"Server=localhost;Database=moviedb;User=root;Password=1"));
+            
+            services.AddScoped<IMovieService, MovieService>();
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
