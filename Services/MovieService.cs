@@ -19,11 +19,18 @@ namespace Services
             this._context = context;
         }
 
-        
-
-        public Task<bool> AddMovie(Movie movie)
+        public async Task<bool> AddMovie(Movie movie)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _context.Movies.Add(movie);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> DeleteMovie(int id)
@@ -33,9 +40,10 @@ namespace Services
             try
             {
                 _context.Remove(movie);
+                await _context.SaveChangesAsync();
                 return true;
             }
-            catch (System.Exception )
+            catch (DbUpdateConcurrencyException)
             {
                 return false;
             }
@@ -51,8 +59,20 @@ namespace Services
 
         public async Task<bool> UpdateMovie(Movie movie) 
         {
-            var findMovie = await _context.Movies
-                .SingleOrDefaultAsync(m => m.Id == movie.Id);
+            _context.Entry(movie).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.Movies.Find(movie.Id) == null)
+                {
+                    return false;
+                }
+            }
+            return false;
         }
             
     }

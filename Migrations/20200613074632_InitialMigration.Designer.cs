@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aria.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200603194534_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200613074632_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
