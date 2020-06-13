@@ -6,10 +6,10 @@ namespace Contracts
 {
     public interface IMovieService
     {
-        Task<bool> AddMovie(Movie movie);
-        Task<bool> UpdateMovie(Movie movie);
-        Task<IEnumerable<Movie>> GetMovies();
-        Task<Movie> GetMovieById(int id);
-        Task<bool> DeleteMovie(int id);
+        Task<bool> Add(Movie movie);
+        Task<bool> Update(int id, Movie movie);
+        Task<IEnumerable<Movie>> GetAll();
+        Task<Movie> GetById(int id);
+        Task<bool> Delete(int id);
     }
 }

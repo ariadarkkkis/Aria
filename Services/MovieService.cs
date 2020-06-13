@@ -19,7 +19,8 @@ namespace Services
             this._context = context;
         }
 
-        public async Task<bool> AddMovie(Movie movie)
+        // Add
+        public async Task<bool> Add(Movie movie)
         {
             try
             {
@@ -33,7 +34,8 @@ namespace Services
             }
         }
 
-        public async Task<bool> DeleteMovie(int id)
+        // Delete
+        public async Task<bool> Delete(int id)
         {
             var movie = await _context.Movies
                 .SingleOrDefaultAsync(m => m.Id == id);
@@ -49,16 +51,21 @@ namespace Services
             }
         }
 
-        public async Task<Movie> GetMovieById(int id) =>
+        // Get by ID
+        public async Task<Movie> GetById(int id) =>
             await _context.Movies
                 .SingleOrDefaultAsync(m => m.Id == id);
         
-
-        public async Task<IEnumerable<Movie>> GetMovies() =>
+        // Get All
+        public async Task<IEnumerable<Movie>> GetAll() =>
             await _context.Movies.ToListAsync();
 
-        public async Task<bool> UpdateMovie(Movie movie) 
+        // Update
+        public async Task<bool> Update(int id, Movie movie) 
         {
+            if (id != movie.Id)
+                return false;
+
             _context.Entry(movie).State = EntityState.Modified;
             try
             {
