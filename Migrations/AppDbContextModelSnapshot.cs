@@ -23,8 +23,8 @@ namespace Aria.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -33,6 +33,8 @@ namespace Aria.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieId");
+
                     b.ToTable("Categories");
                 });
 
@@ -40,6 +42,9 @@ namespace Aria.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -61,7 +66,25 @@ namespace Aria.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("Entites.Category", b =>
+                {
+                    b.HasOne("Entites.Movie", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("MovieId");
+                });
+
+            modelBuilder.Entity("Entites.Movie", b =>
+                {
+                    b.HasOne("Entites.Category", null)
+                        .WithMany("Movies")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

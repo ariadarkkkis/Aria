@@ -12,16 +12,33 @@ namespace Context
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(string constr) : base(new DbContextOptionsBuilder<AppDbContext>().UseMySql(constr).Options) { }
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(string constr) 
+            : base(new DbContextOptionsBuilder<AppDbContext>().UseMySql(constr).Options)
+        { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) 
+            : base(options)
+        { }
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Movie>().Property(w => w.Name).HasMaxLength(255).IsRequired();
-            modelBuilder.Entity<Category>().Property(q => q.Name).HasMaxLength(255).IsRequired();
+            modelBuilder.Entity<Movie>()
+                .HasMany(c => c.Categories);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(m => m.Movies);
+            
+            modelBuilder.Entity<Movie>()
+                .Property(w => w.Name)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            modelBuilder.Entity<Category>()
+                .Property(q => q.Name)
+                .HasMaxLength(255)
+                .IsRequired();
         }
 
     }
