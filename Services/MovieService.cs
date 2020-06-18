@@ -8,15 +8,18 @@ using Contracts;
 using Entites;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Services
 {
     public class MovieService : IMovieService
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<MovieService> logger;
 
-        public MovieService(AppDbContext context)
+        public MovieService(AppDbContext context, ILogger<MovieService> logger)
         {
+            this.logger = logger;
             this._context = context;
         }
 
@@ -27,10 +30,12 @@ namespace Services
             {
                 _context.Movies.Add(movie);
                 await _context.SaveChangesAsync();
+                logger.LogInformation($"Movie with ID {movie.Id} was added.");
                 return true;
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
+                logger.LogWarning($"There was an exception while adding movie with ID {movie.Id}. Exception:{e}");
                 return false;
             }
         }
@@ -39,29 +44,45 @@ namespace Services
         public async Task<bool> Delete(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
-            
-            try
+
+            if (movie == null)
             {
-                _context.Remove(movie);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (DbUpdateConcurrencyException)
-            {
+                logger.LogWarning($"Movie with ID {id} was not found.");
                 return false;
+            }
+            else
+            {
+                try
+                {
+                    _context.Remove(movie);
+                    await _context.SaveChangesAsync();
+                    logger.LogInformation($"Movie with ID {movie.Id} was deleted.");
+                    return true;
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    logger.LogWarning($"There was an exception while deleting movie with ID {movie.Id}. Exception:{e}");
+                    return false;
+                }
             }
         }
 
         // Get by ID
         public async Task<Movie> GetById(int id)
-            => await _context.Movies.FindAsync(id);
-        
+        {
+            logger.LogInformation($"GetById on ID {id} has been called.");
+            return await _context.Movies.FindAsync(id);
+        }
+
         // Get All
         public async Task<IEnumerable<Movie>> GetAll()
-            => await _context.Movies.ToListAsync();
+        {
+            logger.LogInformation($"GetAll has been called.");
+            return await _context.Movies.ToListAsync();
+        }
 
         // Update
-        public async Task<bool> Update(Movie movie) 
+        public async Task<bool> Update(Movie movie)
         {
             var movieEntity = await _context.Movies.SingleOrDefaultAsync(m => m.Id == movie.Id);
             if (movieEntity != null)
@@ -75,13 +96,15 @@ namespace Services
 
                 await _context.SaveChangesAsync();
 
+                logger.LogInformation($"Movie with ID {movie.Id} has been updated.");
                 return true;
             }
             else
             {
+                logger.LogWarning($"Movie with ID {movie.Id} was not found.");
                 return false;
             }
         }
-            
+
     }
 }
