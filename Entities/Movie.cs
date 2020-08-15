@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using Aria.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Entites
+namespace Aria.Entities
 {
     public class Movie
     {

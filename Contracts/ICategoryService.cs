@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aria.DTOs;
-using Entites;
+using Aria.Entities;
 
 namespace Aria.Contracts
 {

@@ -1,4 +1,4 @@
-using Entites;
+using Aria.Entities;
 
 namespace Aria.Entities
 {

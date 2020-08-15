@@ -1,11 +1,10 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Context;
-using Contracts;
-using Entites;
+using Aria.Context;
+using Aria.Contracts;
+using Aria.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Aria.DTOs;
 using AutoMapper.QueryableExtensions;
 
-namespace Services
+namespace Aria.Services
 {
     public class MovieService : IMovieService
     {

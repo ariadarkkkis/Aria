@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using Aria.Contracts;
 using Aria.DTOs;
 using AutoMapper;
-using Context;
-using Entites;
+using Aria.Context;
+using Aria.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Aria.Services {
+namespace Aria.Services 
+{
     public class CategoryService : ICategoryService 
     {
         private readonly AppDbContext _context;

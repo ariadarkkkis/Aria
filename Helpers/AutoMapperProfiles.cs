@@ -1,6 +1,6 @@
 using Aria.DTOs;
 using AutoMapper;
-using Entites;
+using Aria.Entities;
 
 namespace Aria.Helpers
 {

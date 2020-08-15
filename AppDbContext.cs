@@ -2,14 +2,13 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Aria.Entities;
-using Entites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 
-namespace Context
+namespace Aria.Context
 {
     public class AppDbContext : DbContext
     {

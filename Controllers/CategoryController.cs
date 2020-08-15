@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Aria.Contracts;
 using Aria.DTOs;
-using Entites;
+using Aria.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aria.Controllers 

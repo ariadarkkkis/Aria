@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aria.DTOs;
-using Entites;
+using Aria.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Contracts
+namespace Aria.Contracts
 {
     public interface IMovieService
     {
