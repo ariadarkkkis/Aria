@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Context;
 using Contracts;
-using Controllers;
+using Aria.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +38,8 @@ namespace Aria
             services.AddScoped<IMovieService, MovieService>();
 
             services.AddControllers();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSwaggerGen(c =>
             {

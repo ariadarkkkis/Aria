@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using Aria.DTOs;
 using Contracts;
 using Entites;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Controllers
+namespace Aria.Controllers
 {
-    [Route("/api/[controller]")]
+    [Route("/api/movie")]
     public class MovieController : ControllerBase
     {
         private readonly IMovieService _service;
@@ -23,28 +24,32 @@ namespace Controllers
         // Get entry by ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMovieById(int id)
-            => Ok(await _service.GetById(id));
+        {
+            var result = await _service.GetById(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
 
         // Add
         [HttpPost("Add")]
         //[ModelValidator]
         [Produces(typeof(bool))]
-        public async Task<IActionResult> AddMovie([FromBody]Movie movie)
-            => Ok(await _service.Add(movie));
+        public async Task<IActionResult> AddMovie([FromBody]MovieCreationDTO movieCreationDTO)
+            => Ok(await _service.Add(movieCreationDTO));
 
         // Update an entry
         [HttpPut("Update")]
         [Produces(typeof(bool))]
-        public async Task<IActionResult> UpdateMovie([FromBody]Movie movie)
-            => Ok(await _service.Update(movie));
+        public async Task<IActionResult> UpdateMovie([FromBody]MovieCreationDTO movieCreationDTO)
+            => Ok(await _service.Update(movieCreationDTO));
 
         // Delete an entry
         [HttpDelete("Delete/{id:int}")]
         [Produces(typeof(bool))]
         public async Task<IActionResult> DeleteMovie(int id)
             => Ok(await _service.Delete(id));
-
-        
-
     }
 }
