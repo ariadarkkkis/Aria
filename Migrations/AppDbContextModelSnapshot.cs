@@ -17,7 +17,7 @@ namespace Aria.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Aria.Aria.Entities.MovieCategory", b =>
+            modelBuilder.Entity("Aria.Entities.MovieCategory", b =>
                 {
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
@@ -76,7 +76,7 @@ namespace Aria.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("Aria.Aria.Entities.MovieCategory", b =>
+            modelBuilder.Entity("Aria.Entities.MovieCategory", b =>
                 {
                     b.HasOne("Aria.Entities.Category", "Category")
                         .WithMany("MovieCategories")
