@@ -87,23 +87,11 @@ namespace Aria.Services
 
         public async Task<bool> Update(CategoryCreationDTO categoryCreationDTO)
         {
-            var category = _mapper.Map<Category>(categoryCreationDTO);
-            var categoryEntity = await _context.Categories.SingleOrDefaultAsync(c => c.Id == category.Id);
-            if (categoryEntity != null)
-            {
-                categoryEntity.Name = category.Name;
-                categoryEntity.MovieCategories = category.MovieCategories;
-
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Movie with ID {categoryCreationDTO.Id} has been updated.");
-                return true;
-            }
-            else
-            {
-                _logger.LogWarning($"Movie with ID {categoryCreationDTO.Id} was not found.");
-                return false;
-            }
+            var categoryEntity = await _context.Categories.SingleOrDefaultAsync(m => m.Id == categoryCreationDTO.Id);
+            if (categoryEntity == null) return false;
+            _mapper.Map<CategoryCreationDTO, Category>(categoryCreationDTO, categoryEntity);
+            
+            return ((await _context.SaveChangesAsync()) > 0);
         }
     }
 }

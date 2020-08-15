@@ -99,27 +99,10 @@ namespace Aria.Services
         // Update
         public async Task<bool> Update(MovieCreationDTO movieCreationDTO)
         {
-            var movie = _mapper.Map<Movie>(movieCreationDTO);
-            var movieEntity = await _context.Movies.SingleOrDefaultAsync(m => m.Id == movie.Id);
-            if (movieEntity != null)
-            {
-                movieEntity.Name = movie.Name;
-                movieEntity.Imdb = movie.Imdb;
-                movieEntity.Year = movie.Year;
-                movieEntity.ReleaseDate = movie.ReleaseDate;
-                movieEntity.Description = movie.Description;
-                movieEntity.MovieCategories = movie.MovieCategories;
-
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Movie with ID {movieCreationDTO.Id} has been updated.");
-                return true;
-            }
-            else
-            {
-                _logger.LogWarning($"Movie with ID {movieCreationDTO.Id} was not found.");
-                return false;
-            }
+            var movieEntity = await _context.Movies.SingleOrDefaultAsync(m => m.Id == movieCreationDTO.Id);
+            if (movieEntity == null) return false;
+            _mapper.Map<MovieCreationDTO, Movie>(movieCreationDTO, movieEntity);
+            return ((await _context.SaveChangesAsync()) > 0);
         }
     }
 }

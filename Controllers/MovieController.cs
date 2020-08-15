@@ -35,7 +35,6 @@ namespace Aria.Controllers
 
         // Add
         [HttpPost("Add")]
-        //[ModelValidator]
         [Produces(typeof(bool))]
         public async Task<IActionResult> AddMovie([FromBody]MovieCreationDTO movieCreationDTO)
             => Ok(await _service.Add(movieCreationDTO));
